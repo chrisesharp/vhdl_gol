@@ -4,13 +4,16 @@ use ieee.numeric_std.all;
 
 entity cell is
    port (
-       clk          : in std_logic;
-       alive        : out std_logic;
-       neighbours   : in std_logic_vector (7 downto 0)
-       );
+      clk          : in std_logic;
+      neighbours   : in std_logic_vector (7 downto 0) := "00000000";
+      liveness     : out std_logic
+      );
 end cell;
 
 architecture struct of cell is
+    type cell_type IS (alive, dead);
+    signal state : cell_type := dead;
+
     function count_ones(s : std_logic_vector) return natural is
         variable count : natural := 0;
     begin
@@ -28,15 +31,23 @@ begin
     begin
         if rising_edge(clk) then
             num_neighbours := count_ones(neighbours);
-
-            case (num_neighbours) is
-                when 2 =>
-                    alive <= '1';
-                when 3 =>
-                    alive <= '1';
-                when others =>
-                    alive <= '0';
+            case (state) is
+              when alive =>
+                if (num_neighbours = 2 or num_neighbours = 3) then
+                  liveness <= '1';
+                else
+                  liveness <= '0';
+                  state <= dead;
+                end if;
+              when dead  =>
+                if (num_neighbours = 3) then
+                  liveness <= '1';
+                  state <= alive;
+                else
+                  liveness <= '0';
+                end if;
             end case;
+
         end if;
     end process;
 end struct;
