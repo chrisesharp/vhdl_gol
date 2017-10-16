@@ -7,7 +7,7 @@ GHDL=ghdl
 GHDLFLAGS=
 
 # Default target
-all: run
+all: cell_testbench
 
 # Elaboration target
 cell_testbench: /usr/local/lib/ghdl/v93/ieee/std_logic_1164.o /usr/local/lib/ghdl/v93/ieee/std_logic_1164_body.o /usr/local/lib/ghdl/v93/ieee/numeric_std.o /usr/local/lib/ghdl/v93/ieee/numeric_std-body.o cell.o cell_testbench.o
@@ -36,7 +36,7 @@ cell_testbench.o: cell_testbench.vhdl
 	$(GHDL) -a $(GHDLFLAGS) $<
 
 # Files dependences
-/usr/local/lib/ghdl/v93/ieee/std_logic_1164.o:
+/usr/local/lib/ghdl/v93/ieee/std_logic_1164.o: 
 /usr/local/lib/ghdl/v93/ieee/std_logic_1164_body.o:  /usr/local/lib/ghdl/v93/ieee/std_logic_1164.o
 /usr/local/lib/ghdl/v93/ieee/numeric_std.o:  /usr/local/lib/ghdl/v93/ieee/std_logic_1164.o
 /usr/local/lib/ghdl/v93/ieee/numeric_std-body.o:  /usr/local/lib/ghdl/v93/ieee/numeric_std.o
